@@ -1,0 +1,25 @@
+name: Checkmarx Kics Iac Scan
+
+on:
+  pull_request:
+  
+jobs:
+  kics-job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Creating directory for Results
+        run: mkdir -p kicsResults
+
+      - name: Run KICS Scan
+        uses: Checkmarx/kics-github-action@v1.4  
+        with:
+          path: 'aws/'
+          ignore_on_exit: results
+          output_path: kicsResults/
+          enable_comments: true
+
+      - name: display kics results
+        run: |
+          cat kicsResults/results.json
